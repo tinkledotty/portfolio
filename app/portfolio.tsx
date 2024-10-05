@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, useMotionValue, useSpring, useAnimation } from 'framer-motion'
 import { Github, Linkedin, Mail } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import Image from "next/image"
 
 const projects = [
@@ -31,14 +31,17 @@ const StarTrail = ({ x, y }: { x: number; y: number }) => {
   const controls = useAnimation()
 
   useEffect(() => {
-    controls.start({
-      opacity: [1, 0],
-      scale: [0, 1],
-      x: x + Math.random() * 20 - 10,
-      y: y + Math.random() * 20 - 10,
-      transition: { duration: 0.5 }
-    })
-  }, [x, y])
+    const animateTrail = async () => {
+      await controls.start({
+        opacity: [1, 0],
+        scale: [0, 1],
+        x: x + Math.random() * 20 - 10,
+        y: y + Math.random() * 20 - 10,
+        transition: { duration: 0.5 }
+      })
+    }
+    animateTrail()
+  }, [x, y, controls])
 
   return (
     <motion.div
@@ -60,25 +63,25 @@ export default function Component() {
   const cursorXSpring = useSpring(cursorX, springConfig)
   const cursorYSpring = useSpring(cursorY, springConfig)
 
+  const moveCursor = useCallback((e: MouseEvent) => {
+    cursorX.set(e.clientX - 16)
+    cursorY.set(e.clientY - 16)
+    setTrails(prevTrails => [
+      ...prevTrails.slice(-10),
+      { id: Date.now(), x: e.clientX, y: e.clientY }
+    ])
+  }, [cursorX, cursorY])
+
+  const checkCursorPosition = useCallback((e: MouseEvent) => {
+    const element = document.elementFromPoint(e.clientX, e.clientY)
+    if (element && (element.tagName === 'P' || element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3')) {
+      setCursorVariant("text")
+    } else {
+      setCursorVariant("default")
+    }
+  }, [])
+
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16)
-      cursorY.set(e.clientY - 16)
-      setTrails(prevTrails => [
-        ...prevTrails.slice(-10),
-        { id: Date.now(), x: e.clientX, y: e.clientY }
-      ])
-    }
-
-    const checkCursorPosition = (e: MouseEvent) => {
-      const element = document.elementFromPoint(e.clientX, e.clientY)
-      if (element && (element.tagName === 'P' || element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3')) {
-        setCursorVariant("text")
-      } else {
-        setCursorVariant("default")
-      }
-    }
-
     window.addEventListener('mousemove', moveCursor)
     window.addEventListener('mousemove', checkCursorPosition)
 
@@ -86,7 +89,7 @@ export default function Component() {
       window.removeEventListener('mousemove', moveCursor)
       window.removeEventListener('mousemove', checkCursorPosition)
     }
-  }, [])
+  }, [moveCursor, checkCursorPosition])
 
   const [gradientAngle, setGradientAngle] = useState(0)
 
@@ -129,11 +132,11 @@ export default function Component() {
   const cursorVariants = {
     default: {
       backgroundColor: "white",
-      mixBlendMode: "normal" as "normal",
+      mixBlendMode: "normal" as const,
     },
     text: {
       backgroundColor: "white",
-      mixBlendMode: "difference" as "difference",
+      mixBlendMode: "difference" as const,
     },
   }
 
@@ -177,7 +180,7 @@ export default function Component() {
       <main className="relative z-10 pt-14">
         <section id="home" className="container mx-auto px-6 py-20 text-center min-h-screen flex flex-col justify-center">
           <h1 className="text-5xl font-bold mb-4">Welcome to My Portfolio</h1>
-          <p className="text-xl mb-8">I'm a web developer passionate about creating beautiful and functional websites.</p>
+          <p className="text-xl mb-8">I&apos;m a web developer passionate about creating beautiful and functional websites.</p>
         </section>
         <section id="projects" className="container mx-auto px-6 py-20 min-h-screen flex flex-col justify-center">
           <h2 className="text-3xl font-bold mb-8 text-center">My Projects</h2>
