@@ -85,6 +85,7 @@ export default function Component() {
     window.addEventListener('mousemove', moveCursor)
     window.addEventListener('mousemove', checkCursorPosition)
 
+    // Cleanup when the component unmounts
     return () => {
       window.removeEventListener('mousemove', moveCursor)
       window.removeEventListener('mousemove', checkCursorPosition)
