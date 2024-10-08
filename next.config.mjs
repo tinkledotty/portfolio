@@ -2,12 +2,9 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    output: 'export',
     images: {
-      unoptimized: true,
+      domains: ['your-image-domain.com'], // Add any domains you're loading images from
     },
-    assetPrefix: '/portfolio',
-    basePath: '/portfolio',
   }
 
 export default nextConfig;
