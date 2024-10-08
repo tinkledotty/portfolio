@@ -2,7 +2,14 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    
+    async rewrites() {
+        return [
+          {
+            source: '/:path*',
+            destination: 'https://portfolio-slpp.vercel.app/:path*',
+          },
+        ]
+      },
 
 };
 
