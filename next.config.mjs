@@ -2,15 +2,12 @@
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    async rewrites() {
-        return [
-          {
-            source: '/:path*',
-            destination: 'https://portfolio-slpp.vercel.app/:path*',
-          },
-        ]
-      },
-
-};
+    output: 'export',
+    images: {
+      unoptimized: true,
+    },
+    assetPrefix: '/portfolio',
+    basePath: '/portfolio',
+  }
 
 export default nextConfig;

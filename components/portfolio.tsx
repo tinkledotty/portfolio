@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useMotionValue, useSpring, useAnimation } from 'framer-motion'
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { Linkedin, Mail } from 'lucide-react'
 import { Button } from "./ui/button"
 import Image from "next/image"
+import { GitHubIcon } from '@/components/icons/GitHubIcon'
+
 
 const projects = [
   { 
@@ -204,13 +206,13 @@ export default function Component() {
         <section id="contact" className="container mx-auto px-6 py-20 text-center min-h-screen flex flex-col justify-center">
           <h2 className="text-3xl font-bold mb-8">Get in Touch</h2>
           <div className="flex justify-center space-x-6">
-            <a href="#" className="hover:text-gray-300" aria-label="GitHub">
-              <Github size={24} />
+            <a href="https://github.com/tinkledotty" className="hover:text-gray-300" aria-label="GitHub">
+              <GitHubIcon />
             </a>
-            <a href="#" className="hover:text-gray-300" aria-label="LinkedIn">
+            <a href="https://linkedin.com/in/linyunxin" className="hover:text-gray-300" aria-label="LinkedIn">
               <Linkedin size={24} />
             </a>
-            <a href="#" className="hover:text-gray-300" aria-label="Email">
+            <a href="mailto:jarainelim@gmail.com" className="hover:text-gray-300" aria-label="Email">
               <Mail size={24} />
             </a>
           </div>
